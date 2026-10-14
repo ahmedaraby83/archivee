@@ -19,7 +19,11 @@ class _FolderScreenState extends State<FolderScreen> {
   @override
   void initState() { super.initState(); _load(); }
 
-  Future<void> _load() async => setState(() => _items = await DB.instance.items(widget.folder.id, type: _filter == 'all' ? null : _filter));
+  Future<void> _load() async {
+    final items = await DB.instance.items(widget.folder.id, type: _filter == 'all' ? null : _filter);
+    if (!mounted) return;
+    setState(() => _items = items);
+  }
 
   @override
   Widget build(BuildContext context) {
