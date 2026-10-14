@@ -18,8 +18,11 @@ class _SettingsScreenState extends State<SettingsScreen> {
   void initState() { super.initState(); _load(); }
 
   Future<void> _load() async {
-    _email.text = await BackupService.driveEmail();
-    setState(() => _bio = await AuthService.biometricOn());
+    final email = await BackupService.driveEmail();
+    final biometricEnabled = await AuthService.biometricOn();
+    if (!mounted) return;
+    _email.text = email;
+    setState(() => _bio = biometricEnabled);
   }
 
   Future<void> _run(Future<String> Function() fn) async {
