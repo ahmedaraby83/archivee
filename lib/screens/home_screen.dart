@@ -18,7 +18,11 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() { super.initState(); _load(); }
 
-  Future<void> _load() async => setState(() => _folders = await DB.instance.folders());
+  Future<void> _load() async {
+    final folders = await DB.instance.folders();
+    if (!mounted) return;
+    setState(() => _folders = folders);
+  }
 
   void _openFolder(Folder f) {
     if (f.locked) {
